@@ -1,1 +1,202 @@
+# ---------------------------- CATBOOST CLASSIFIER -------------------------------------------
+
+# def objective(trial):
+#     params = {
+#         "iterations": trial.suggest_int("iterations", 50, 500),
+#         "depth": trial.suggest_int("depth", 2, 10),
+#         "learning_rate": trial.suggest_loguniform("learning_rate", 0.01, 0.3),
+#         "l2_leaf_reg": trial.suggest_float("l2_leaf_reg", 1e-8, 10.0),
+#         "border_count": trial.suggest_int("border_count", 32, 255),
+#         "bagging_temperature": trial.suggest_float("bagging_temperature", 0.0, 1.0),
+#         "random_strength": trial.suggest_float("random_strength", 1e-8, 10.0),
+#         # "od_wait": trial.suggest_int("od_wait", 10, 50),
+#         # "task_type": "GPU",
+#     }
+    
+#     clf = CatBoostClassifier(**params, verbose=0)
+    
+#     score = cross_val_score(clf, X_train, y_train, cv=5, scoring="accuracy", n_jobs=-1).mean()
+#     return score
+
+
+# # Run the optimization
+# study = optuna.create_study(direction="maximize")
+# study.optimize(objective, n_trials=1000, show_progress_bar=True)
+
+# # Best hyperparameters
+# print("Best Hyperparameters:", study.best_params)
+
+# best_params = study.best_params
+# best_clf = CatBoostClassifier(**best_params, verbose=0)
+# best_clf.fit(X_train, y_train)
+
+# y_pred = best_clf.predict_proba(X_test)[:, 1]
+# accuracy = roc_auc_score(y_test, y_pred)
+# print("Test Accuracy:", accuracy)
+
+
+#-------------------------- LGBM CLASSIFIER ----------------------------------------------------------------------------
+
+# def objective(trial):
+#     params = {
+#         "n_estimators": trial.suggest_int("n_estimators", 50, 500),
+#         "max_depth": trial.suggest_int("max_depth", 2, 20),
+#         "learning_rate": trial.suggest_loguniform("learning_rate", 0.01, 0.3),
+#         "num_leaves": trial.suggest_int("num_leaves", 2, 256),
+#         "subsample": trial.suggest_float("subsample", 0.5, 1.0),
+#         "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
+#         "reg_alpha": trial.suggest_float("reg_alpha", 1e-8, 10.0),
+#         "reg_lambda": trial.suggest_float("reg_lambda", 1e-8, 10.0),
+#         "min_child_samples": trial.suggest_int("min_child_samples", 1, 100),
+#         "verbose":-1
+#     }
+    
+#     clf = LGBMClassifier(**params)
+    
+#     score = cross_val_score(clf, X_train, y_train, cv=5, scoring="roc_auc", n_jobs=-1, verbose=0).mean()
+#     return score
+
+# study = optuna.create_study(direction="maximize")
+# study.optimize(objective, n_trials=1000, show_progress_bar=True)
+
+# print("Best Hyperparameters:", study.best_params)
+
+# best_params = study.best_params
+# best_clf = LGBMClassifier(**best_params)
+# best_clf.fit(X_train, y_train)
+
+# y_pred = best_clf.predict_proba(X_test)[:, 1]
+# accuracy = roc_auc_score(y_test, y_pred)
+# print("Test Accuracy:", accuracy)
+
+# -----------------------------------   XGB CLASSIFIER -------------------------------------------
+# def objective(trial):
+#     params = {
+#         "n_estimators": trial.suggest_int("n_estimators", 50, 800),
+#         "max_depth": trial.suggest_int("max_depth", 2, 20),
+#         "learning_rate": trial.suggest_loguniform("learning_rate", 0.01, 0.3),
+#         "subsample": trial.suggest_float("subsample", 0.5, 1.0),
+#         "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),
+#         "gamma": trial.suggest_float("gamma", 0, 5),
+#         "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
+#         "lambda": trial.suggest_float("lambda", 1e-8, 10.0),
+#         "alpha": trial.suggest_float("alpha", 1e-8, 10.0),
+#         # "tree_method":"gpu_hist",
+#         # "devices":'0'
+#     }
+    
+#     clf = XGBClassifier(**params, use_label_encoder=False, eval_metric="logloss")
+    
+#     score = cross_val_score(clf, X_train, y_train, cv=5, scoring="roc_auc", n_jobs=-1).mean()
+#     return score
+
+# study = optuna.create_study(direction="maximize")
+# study.optimize(objective, n_trials=1000, show_progress_bar=True)
+
+# print("Best Hyperparameters:", study.best_params)
+
+# best_params = study.best_params
+# best_clf = XGBClassifier(**best_params, use_label_encoder=False, eval_metric="logloss")
+# best_clf.fit(X_train, y_train)
+
+# y_pred = best_clf.predict_proba(X_test)[:, 1]
+# accuracy = roc_auc_score(y_test, y_pred)
+# print("Test Accuracy:", accuracy)
+
+# ------------------------------------------- Random Forest Calssifier ------------------------------------------------
+
+# def objective(trial):
+#     n_estimators = trial.suggest_int("n_estimators", 50, 500)
+#     max_depth = trial.suggest_int("max_depth", 2, 20)
+#     min_samples_split = trial.suggest_int("min_samples_split", 2, 20)
+#     min_samples_leaf = trial.suggest_int("min_samples_leaf", 1, 20)
+#     max_features = trial.suggest_float("max_features", 0.1, 1.0)
+    
+#     clf = RandomForestClassifier(
+#         n_estimators=n_estimators,
+#         max_depth=max_depth,
+#         min_samples_split=min_samples_split,
+#         min_samples_leaf=min_samples_leaf,
+#         max_features=max_features,
+#         random_state=42,
+#         n_jobs=-1
+#     )
+    
+#     score = cross_val_score(clf, X_train, y_train, cv=5, scoring="accuracy", n_jobs=-1).mean()
+#     return score
+
+# study = optuna.create_study(direction="maximize")
+# study.optimize(objective, n_trials=500, show_progress_bar=True)
+
+# print("Best Hyperparameters:", study.best_params)
+
+# best_params = study.best_params
+# best_clf = RandomForestClassifier(**best_params, random_state=42, n_jobs=-1)
+# best_clf.fit(X_train, y_train)
+
+# y_pred = best_clf.predict_proba(X_test)[:, 1]
+# accuracy = roc_auc_score(y_test, y_pred)
+# print("Test Accuracy:", accuracy)
+
+# --------------------------------------- Stacking Classifier ---------------------------------------------------------------------
+
+# FOLDS = 10
+# kf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=42)
+
+# oof_preds = np.zeros((len(X), 4)) 
+# stack_test_preds = np.zeros((len(test_df), 4))
+
+# # Cross-validation loop
+# for i, (train_idx, val_idx) in enumerate(kf.split(X, y)):
+#     print(f'------------------ Fold {i+1} ----------------------')
+    
+#     X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
+#     y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
+
+#     cat_model = CatBoostClassifier(**cat_params)
+#     cat_model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=0)
+#     oof_preds[val_idx, 0] = cat_model.predict_proba(X_val)[:, 1]
+#     stack_test_preds[:, 0] += cat_model.predict_proba(test_df)[:, 1] / FOLDS  
+
+#     lgb_model = LGBMClassifier(**lgb_params)
+#     lgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)])
+#     oof_preds[val_idx, 1] = lgb_model.predict_proba(X_val)[:, 1]
+#     stack_test_preds[:, 1] += lgb_model.predict_proba(test_df)[:, 1] / FOLDS  
+    
+#     xgb_model = XGBClassifier(**xgb_params)
+#     xgb_model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=0, early_stopping_rounds=50)
+#     oof_preds[val_idx, 2] = xgb_model.predict_proba(X_val)[:, 1]
+#     stack_test_preds[:, 2] += xgb_model.predict_proba(test_df)[:, 1] / FOLDS 
+
+#     rf_model = RandomForestClassifier(**rf_params)
+#     rf_model.fit(X_train, y_train)
+#     oof_preds[val_idx, 3] = rf_model.predict_proba(X_val)[:, 1]
+#     stack_test_preds[:, 3]+=rf_model.predict_proba(test_df)[:, 1]/FOLDS
+
+
+# meta_model = LogisticRegression()
+# meta_model.fit(oof_preds, y)
+# final_preds = meta_model.predict_proba(stack_test_preds)[:, 1]
+
+# print("Stacking ensemble predictions complete!")
+
+
+# Train the meta model
+# meta_model = LogisticRegression()
+# meta_model.fit(oof_preds, y)
+
+# # Use the stacked test predictions for final prediction
+# final_preds = meta_model.predict_proba(stack_test_preds)[:, 1]
+
+# print("Stacking ensemble predictions complete!")
+
+# # Corrected line: Use stack_test_preds instead of test_df
+# pred_test = meta_model.predict_proba(stack_test_preds)[:, 1]  
+
+# sub['rainfall'] = pred_test
+# sub.to_csv('submission.csv', index=False)
+
+
+
+
 
